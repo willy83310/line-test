@@ -68,7 +68,7 @@ def handle_message(event):
 #如果非以上的選項，就會學你說話
 
     message = TextSendMessage(reply_text)
-	print('reply message : ', message)
+    print('reply message : ', message)
     line_bot_api.reply_message(event.reply_token, message)
 
 import os
