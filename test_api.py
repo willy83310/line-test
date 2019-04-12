@@ -53,10 +53,16 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     print(event)
-    text=event.message.text
+    text = event.message.text
+    user_ID = event.source.userId
+	
+    user_profile = line_bot_api.get_profile(user_ID)
 
+    user_name = user_profile.display_name
+    user_picture = user_profile.picture_url
+	
     if (text=="Hi"):
-        reply_text = "Hello"
+        reply_text = f"{user_name} , Hello"
         #Your user ID
 
     elif(text=="你好"):
@@ -64,7 +70,7 @@ def handle_message(event):
     elif(text=="機器人"):
         reply_text = "叫我嗎"
     else:
-        reply_text = text
+        reply_text = f"{user_name},{user_ID},{user_picture} , Hello"
 #如果非以上的選項，就會學你說話
 
     message = TextSendMessage(reply_text)
