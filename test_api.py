@@ -54,7 +54,7 @@ def callback():
 def handle_message(event):
     print(event)
     text = event.message.text
-    user_ID = event.source.userId
+    user_ID = event.source["userId"]
 	
     user_profile = line_bot_api.get_profile(user_ID)
 
