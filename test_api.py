@@ -77,7 +77,7 @@ def handle_message(event):
     user_picture = user_profile.picture_url
 	
     if (text == "翻譯") :
-		button_template_message =ButtonsTemplate(
+        button_template_message =ButtonsTemplate(
             thumbnail_image_url="https://i.imgur.com/eTldj2E.png?1",
             title='Menu', 
             text='Please select',
