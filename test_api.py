@@ -28,10 +28,13 @@ from linebot.models import *
 
 app = Flask(__name__)
 
+Channel_Access_Token = "15Nebz4rF/k9l0KsuYf9fIcMFIZrN4gvpHI7vGxyoWGa2rhF+NpPaA8KFehfLAKNfBKNP4jImjO8qKUzixj9NvirGAYfnoVP4OZKXMWQPnikZW0/7aMEumr7tRcxrz4cQbkUXcexJdidKcGHkjKk9QdB04t89/1O/w1cDnyilFU="
+Secret = "f41a8267162f9ea5e0d877686b59bdac"
+
 # Channel Access Token
-line_bot_api = LineBotApi("15Nebz4rF/k9l0KsuYf9fIcMFIZrN4gvpHI7vGxyoWGa2rhF+NpPaA8KFehfLAKNfBKNP4jImjO8qKUzixj9NvirGAYfnoVP4OZKXMWQPnikZW0/7aMEumr7tRcxrz4cQbkUXcexJdidKcGHkjKk9QdB04t89/1O/w1cDnyilFU=")
+line_bot_api = LineBotApi(Channel_Access_Token)
 # Channel Secret
-handler = WebhookHandler("f41a8267162f9ea5e0d877686b59bdac")
+handler = WebhookHandler(Secret)
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -53,7 +56,7 @@ def callback():
 def weather():
     # get request body as text
 	image = ImageSendMessage("https://www.mirrormedia.com.tw/assets/images/20181122160531-c07f2cf36f7e12424970da189de16567-mobile.jpg")
-	line_bot_api.reply_message(event.reply_token, image)
+	line_bot_api.reply_message(Channel_Access_Token, image)
     
 	
 
@@ -63,6 +66,7 @@ def handle_message(event):
     print(event)
     text = event.message.text
     print(event.source.user_id)
+	print(event.reply_token)
     user_ID = event.source.user_id
 	
     user_profile = line_bot_api.get_profile(user_ID)
