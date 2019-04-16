@@ -49,11 +49,6 @@ def callback():
         abort(400)
     return 'OK'
 
-@app.route("/callback/weather", methods=['GET'])
-def callback():
-    # get X-Line-Signature header value
-    signature = request.headers['X-Line-Signature']
-    return 'weather!!!'
 
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
