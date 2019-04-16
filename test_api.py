@@ -55,7 +55,7 @@ def callback():
 @app.route("/callback/weather", methods=['GET'])
 def weather():
     # get request body as text
-    image = ImageSendMessage("https://www.mirrormedia.com.tw/assets/images/20181122160531-c07f2cf36f7e12424970da189de16567-mobile.jpg")
+    image = ImageSendMessage("https://www.mirrormedia.com.tw/assets/images/20181122160531-c07f2cf36f7e12424970da189de16567-mobile.jpg","https://www.mirrormedia.com.tw/assets/images/20181122160531-c07f2cf36f7e12424970da189de16567-mobile.jpg")
     line_bot_api.reply_message(Channel_Access_Token, image)
     
 	
