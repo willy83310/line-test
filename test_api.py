@@ -75,7 +75,7 @@ def handle_post_message(event):
         text = "已進入翻譯模式(預設英文)，欲結束翻譯模式，請按離開翻譯模式"
 
     elif data == "/更換語言" :
-        button_template_message =ButtonsTemplate(
+        language_template =ButtonsTemplate(
             thumbnail_image_url="https://i.imgur.com/eTldj2E.png?1",
             title='翻譯語言更換', 
             text='Please select',
@@ -106,9 +106,11 @@ def handle_post_message(event):
             event.reply_token,
             TemplateSendMessage(
                 alt_text="Template Example",
-                template=button_template_message
+                template=language_template
             )
         )
+        text = None
+
     elif data == "/離開翻譯模式":
         mode_string = ""
         lang = ""
@@ -121,7 +123,7 @@ def handle_post_message(event):
     line_bot_api.reply_message(
         event.reply_token,
         TextMessage(
-            text=str(str(text)),
+            text=text,
         )
     )
 
