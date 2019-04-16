@@ -102,6 +102,13 @@ def handle_post_message(event):
                 ),
             ]
         )
+		line_bot_api.reply_message(
+            event.reply_token,
+            TemplateSendMessage(
+                alt_text="Template Example",
+                template=button_template_message
+            )
+        )
     elif data == "/離開翻譯模式":
         mode_string = ""
         lang = ""
