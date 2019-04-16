@@ -126,7 +126,7 @@ def handle_message(event):
     print('reply message : ', message)
     line_bot_api.reply_message(event.reply_token, message)
 
-def translate()
+#def translate()
 
 
 import os
