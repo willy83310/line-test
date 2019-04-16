@@ -87,17 +87,17 @@ def handle_post_message(event):
     #           此類透過 Postback event 處理。
             PostbackTemplateAction(
                 label='中文', 
-                text="中文轉換中",
+                text="None",
                 data='/語言 zh-tw'
                 ),
             PostbackTemplateAction(
                 label='英文', 
-                text = "英文轉換中",
+                text = "None",
                 data='/語言 en'
                 ),
             PostbackTemplateAction(
                 label='日文', 
-                text = "日文轉換中",
+                text = "None",
                 data='/語言 ja'
                 ),
             ]
