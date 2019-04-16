@@ -55,8 +55,8 @@ def callback():
 @app.route("/callback/weather", methods=['GET'])
 def weather():
     # get request body as text
-	image = ImageSendMessage("https://www.mirrormedia.com.tw/assets/images/20181122160531-c07f2cf36f7e12424970da189de16567-mobile.jpg")
-	line_bot_api.reply_message(Channel_Access_Token, image)
+    image = ImageSendMessage("https://www.mirrormedia.com.tw/assets/images/20181122160531-c07f2cf36f7e12424970da189de16567-mobile.jpg")
+    line_bot_api.reply_message(Channel_Access_Token, image)
     
 	
 
@@ -66,7 +66,7 @@ def handle_message(event):
     print(event)
     text = event.message.text
     print(event.source.user_id)
-	print(event.reply_token)
+    print(event.reply_token)
     user_ID = event.source.user_id
 	
     user_profile = line_bot_api.get_profile(user_ID)
