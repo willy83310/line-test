@@ -51,10 +51,8 @@ def callback():
 
 @app.route("/callback/weather", methods=['GET'])
 def weather():
-    # get X-Line-Signature header value
-    signature = request.headers['X-Line-Signature']
     # get request body as text
-    return 'weather OK' 
+    return "https://www.mirrormedia.com.tw/assets/images/20181122160531-c07f2cf36f7e12424970da189de16567-mobile.jpg"
 	
 
 # 處理訊息
