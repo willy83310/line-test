@@ -11,6 +11,7 @@
 #import sys
 #import json
 
+import re
 from flask import Flask, request, abort
 from urllib.request import urlopen
 #from oauth2client.service_account import ServiceAccountCredentials
@@ -36,6 +37,14 @@ line_bot_api = LineBotApi(Channel_Access_Token)
 # Channel Secret
 handler = WebhookHandler(Secret)
 
+# pattern 
+translate_pattern = "^/語言"
+
+# global
+mode_string = ""
+lang = ""
+
+
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -56,10 +65,55 @@ def callback():
 def handle_post_message(event):
 # can not get event text
     print("event =", event)
+
+    data = event.postback.data 
+
+    if data == "/進入翻譯模式" :
+        mode_string == "%翻譯"
+        lang = "en"
+        text = "已進入翻譯模式(預設英文)，欲結束翻譯模式，請按離開翻譯模式"
+
+    elif data == "/更換語言" :
+        button_template_message =ButtonsTemplate(
+            thumbnail_image_url="https://i.imgur.com/eTldj2E.png?1",
+            title='翻譯語言更換', 
+            text='Please select',
+            image_size="cover",
+            actions=[
+    #           PostbackTemplateAction 點擊選項後，
+    #           除了文字會顯示在聊天室中，
+    #           還回傳data中的資料，可
+    #           此類透過 Postback event 處理。
+            PostbackTemplateAction(
+                label='中文', 
+                text=None,
+                data='/語言 zh-tw'
+                ),
+            PostbackTemplateAction(
+                label='英文', 
+                text = None,
+                data='/語言 en'
+                ),
+            PostbackTemplateAction(
+                label='日文', 
+                text = None,
+                data='/語言 ja'
+                ),
+            ]
+        )
+    elif data == "/離開翻譯模式":
+        mode_string = ""
+        lang = ""
+        text = "已離開翻譯模式"
+
+    if re.match(translate_pattern , data):
+        lang = data.split(" ")[1]
+        text = "已轉換語系"
+
     line_bot_api.reply_message(
         event.reply_token,
         TextMessage(
-            text=str(str(event.postback.data)),
+            text=str(str(text)),
         )
     )
 
@@ -77,9 +131,12 @@ def handle_message(event):
     user_picture = user_profile.picture_url
 	
     if (text == "翻譯") :
+        #reply_text = "進入翻譯模式"
+        #message = TextSendMessage(reply_text)
+        #line_bot_api.reply_message(event.reply_token, message)
         button_template_message =ButtonsTemplate(
             thumbnail_image_url="https://i.imgur.com/eTldj2E.png?1",
-            title='Menu', 
+            title='翻譯選項', 
             text='Please select',
             image_size="cover",
             actions=[
@@ -88,17 +145,19 @@ def handle_message(event):
     #           還回傳data中的資料，可
     #           此類透過 Postback event 處理。
             PostbackTemplateAction(
-                label='查詢個人檔案顯示文字-Postback', 
-                text='查詢個人檔案',
-                data='action=buy&itemid=1'
+                label='進入翻譯模式', 
+                text=None,
+                data='/進入翻譯模式'
                 ),
             PostbackTemplateAction(
-                label='不顯示文字-Postback', 
+                label='更換語言', 
                 text = None,
-                data='action=buy&itemid=1'
+                data='/更換語言'
                 ),
-            MessageTemplateAction(
-                label='查詢個人檔案-Message', text='查詢個人檔案'
+            PostbackTemplateAction(
+                label='離開翻譯模式', 
+                text = None,
+                data='/離開翻譯模式'
                 ),
             ]
         )
@@ -110,6 +169,7 @@ def handle_message(event):
                 template=button_template_message
             )
         )
+		
     elif (text=="Hi"):
         reply_text = f"{user_name} , Hello"
         #Your user ID
