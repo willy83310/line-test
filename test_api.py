@@ -64,6 +64,7 @@ def callback():
 @handler.add(PostbackEvent)
 def handle_post_message(event):
 # can not get event text
+    global mode_string ,lang
     print("event =", event)
 
     data = event.postback.data 
@@ -86,17 +87,17 @@ def handle_post_message(event):
     #           此類透過 Postback event 處理。
             PostbackTemplateAction(
                 label='中文', 
-                text=None,
+                text="中文轉換中",
                 data='/語言 zh-tw'
                 ),
             PostbackTemplateAction(
                 label='英文', 
-                text = None,
+                text = "英文轉換中",
                 data='/語言 en'
                 ),
             PostbackTemplateAction(
                 label='日文', 
-                text = None,
+                text = "日文轉換中",
                 data='/語言 ja'
                 ),
             ]
