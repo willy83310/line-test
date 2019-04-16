@@ -52,22 +52,23 @@ def callback():
         abort(400)
     return 'OK'
 
-@app.route("/callback/weather", methods=['GET'])
-@handler.add(MessageEvent, message=TextMessage)
-def weather(event):
-    # get request body as text
-    image = ImageSendMessage("https://www.mirrormedia.com.tw/assets/images/20181122160531-c07f2cf36f7e12424970da189de16567-mobile.jpg","https://www.mirrormedia.com.tw/assets/images/20181122160531-c07f2cf36f7e12424970da189de16567-mobile.jpg")
-    line_bot_api.reply_message(event.reply_token, image)
-    
-	
+@handler.add(PostbackEvent)
+def handle_post_message(event):
+# can not get event text
+    print("event =", event)
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextMessage(
+            text=str(str(event.postback.data)),
+        )
+    )
+
 
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     print(event)
     text = event.message.text
-    print(event.source.user_id)
-    print(event.reply_token)
     user_ID = event.source.user_id
 	
     user_profile = line_bot_api.get_profile(user_ID)
@@ -75,7 +76,41 @@ def handle_message(event):
     user_name = user_profile.display_name
     user_picture = user_profile.picture_url
 	
-    if (text=="Hi"):
+    if (text == "翻譯") :
+		button_template_message =ButtonsTemplate(
+            thumbnail_image_url="https://i.imgur.com/eTldj2E.png?1",
+            title='Menu', 
+            text='Please select',
+            image_size="cover",
+            actions=[
+    #           PostbackTemplateAction 點擊選項後，
+    #           除了文字會顯示在聊天室中，
+    #           還回傳data中的資料，可
+    #           此類透過 Postback event 處理。
+            PostbackTemplateAction(
+                label='查詢個人檔案顯示文字-Postback', 
+                text='查詢個人檔案',
+                data='action=buy&itemid=1'
+                ),
+            PostbackTemplateAction(
+                label='不顯示文字-Postback', 
+                text = None,
+                data='action=buy&itemid=1'
+                ),
+            MessageTemplateAction(
+                label='查詢個人檔案-Message', text='查詢個人檔案'
+                ),
+            ]
+        )
+                            
+        line_bot_api.reply_message(
+            event.reply_token,
+            TemplateSendMessage(
+                alt_text="Template Example",
+                template=button_template_message
+            )
+        )
+    elif (text=="Hi"):
         reply_text = f"{user_name} , Hello"
         #Your user ID
 
@@ -90,6 +125,9 @@ def handle_message(event):
     message = TextSendMessage(reply_text)
     print('reply message : ', message)
     line_bot_api.reply_message(event.reply_token, message)
+
+def translate()
+
 
 import os
 if __name__ == "__main__":
