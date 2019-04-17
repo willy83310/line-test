@@ -135,6 +135,8 @@ def handle_post_message(event):
         set_cookie(cookie_list)
         text = "已轉換語系"
 
+    print("mode_string : " , get_cookie("mode_string"))
+    print("lang : " , get_cookie("lang"))
     print("mode_string 1 : " , mode_string)
 
     line_bot_api.reply_message(
