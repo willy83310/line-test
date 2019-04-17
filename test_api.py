@@ -155,7 +155,8 @@ def handle_message(event):
 
     global mode_string , lang
 
-    text = mode_string + event.message.text
+    if mode_string != "" :
+        text = mode_string + event.message.text
 
     print("mode_string : " , mode_string)
     print("text : " , text)
