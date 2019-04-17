@@ -156,7 +156,7 @@ def handle_message(event):
     lang = get_cookie("lang")
 
     print('global : ' , mode_string , lang)
-    if mode_string != "" :
+    if mode_string != "" and mode_string != None:
         text = mode_string + event.message.text
 
     print("mode_string : " , mode_string)
