@@ -142,7 +142,7 @@ def handle_message(event):
 
     global mode_string
 
-    text = mode_string + " " + event.message.text
+    text = mode_string + event.message.text
     user_ID = event.source.user_id
 	
     user_profile = line_bot_api.get_profile(user_ID)
