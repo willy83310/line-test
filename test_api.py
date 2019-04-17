@@ -141,7 +141,7 @@ def handle_message(event):
     print(event)
 
     global mode_string
-
+    print(mode_string)
     text = mode_string + event.message.text
 
     print("text : " , text)
