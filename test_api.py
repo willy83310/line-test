@@ -41,8 +41,11 @@ line_bot_api = LineBotApi(Channel_Access_Token)
 # Channel Secret
 handler = WebhookHandler(Secret)
 
-# pattern 
-translate_pattern = "^/語言"
+# pattern
+
+translate_language_pattern = "^/語言"
+translate_feature_pattern = "^%翻譯"
+
 
 # global
 mode_string = ""
@@ -120,7 +123,7 @@ def handle_post_message(event):
         lang = ""
         text = "已離開翻譯模式"
 
-    if re.match(translate_pattern , data):
+    if re.match(translate_language_pattern , data):
         lang = data.split(" ")[1]
         text = "已轉換語系"
 
@@ -143,6 +146,12 @@ def handle_message(event):
 
     user_name = user_profile.display_name
     user_picture = user_profile.picture_url
+	
+	## 強制離開模式
+	if (event.message.text == "%離開"):
+        mode_string = ""
+        lang = ""
+        reply_text = "已離開"
 	
     if (text == "翻譯") :
         #reply_text = "進入翻譯模式"
@@ -196,7 +205,7 @@ def handle_message(event):
         reply_text = f"{user_name},{user_ID},{user_picture} , Hello"
 #如果非以上的選項，就會學你說話
 
-    if re.match(translate_pattern,text):
+    if re.match(translate_feature_pattern,text):
         reply_text = translate(event.message.text)
 		
 
