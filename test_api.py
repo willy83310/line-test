@@ -127,6 +127,8 @@ def handle_post_message(event):
         lang = data.split(" ")[1]
         text = "已轉換語系"
 
+    print("mode_string 1 : " , mode_string)
+
     line_bot_api.reply_message(
         event.reply_token,
         TextMessage(
