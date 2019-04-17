@@ -81,8 +81,6 @@ def handle_post_message(event):
     if data == "/進入翻譯模式" :
         mode_string = "%翻譯"
         lang = "en"
-        cookie_list = [["mode_string",mode_string],["lang",lang]]
-        set_cookie(cookie_list)
         text = "已進入翻譯模式(預設英文)，欲結束翻譯模式，請按離開翻譯模式"
 
     elif data == "/更換語言" :
@@ -125,19 +123,16 @@ def handle_post_message(event):
     elif data == "/離開翻譯模式":
         mode_string = ""
         lang = ""
-        cookie_list = [["mode_string",""],["lang",""]]
-        set_cookie(cookie_list)
         text = "已離開翻譯模式"
 
     if re.match(translate_language_pattern , data):
         lang = data.split(" ")[1]
-        cookie_list = [["lang" , lang]]
-        set_cookie(cookie_list)
         text = "已轉換語系"
 
-    print("mode_string : " , get_cookie("mode_string"))
-    print("lang : " , get_cookie("lang"))
     print("mode_string 1 : " , mode_string)
+
+    if text == None:
+        return 
 
     line_bot_api.reply_message(
         event.reply_token,
@@ -154,10 +149,9 @@ def handle_message(event):
 
     global mode_string , lang
 
-    mode_string = get_cookie("mode_string")
-    lang = get_cookie("lang")
 
     print('global : ' , mode_string , lang)
+
     if mode_string != "" and mode_string != None:
         text = mode_string + event.message.text
     else :
@@ -176,8 +170,6 @@ def handle_message(event):
     if (event.message.text == "%離開"):
         mode_string = ""
         lang = ""
-        cookie_list = [["mode_string",""],["lang",""]]
-        set_cookie(cookie_list)
         reply_text = "已離開"
 
     if (text == "翻譯") :
@@ -244,24 +236,7 @@ def handle_message(event):
     line_bot_api.reply_message(event.reply_token, message)
 
 
-def set_cookie(key_value_list):
-    """
-    key_value_list : [[key1,value1],[key2,value2],[key3,value3],[key4,value4]]
-    """
-    #先建立響應物件
-    resp = make_response("set cookie")
-    for key , value in key_value_list:
-        resp.set_cookie(key,value,max_age=3600)
-    return resp
 
-def get_cookie(key):
-    """獲取cookie"""
-    try:
-        cookie = request.cookies.get(key)
-    except Exception as e :
-        print(e)
-        cookie = ""
-    return cookie
 
 
 
