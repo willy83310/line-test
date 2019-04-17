@@ -134,7 +134,7 @@ def handle_post_message(event):
 
     if re.match(translate_language_pattern , data):
         lang = data.split(" ")[1]
-		cookie_list = [["lang" , lang]]
+        cookie_list = [["lang" , lang]]
         set_cookie(cookie_list)
         text = "已轉換語系"
 
