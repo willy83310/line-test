@@ -148,11 +148,11 @@ def handle_message(event):
     user_picture = user_profile.picture_url
 	
 	## 強制離開模式
-	if (event.message.text == "%離開"):
+    if (event.message.text == "%離開"):
         mode_string = ""
         lang = ""
         reply_text = "已離開"
-	
+
     if (text == "翻譯") :
         #reply_text = "進入翻譯模式"
         #message = TextSendMessage(reply_text)
