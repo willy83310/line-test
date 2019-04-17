@@ -158,7 +158,9 @@ def handle_message(event):
     print('global : ' , mode_string , lang)
     if mode_string != "" and mode_string != None:
         text = mode_string + event.message.text
-
+    else :
+        text = event.message.text
+	
     print("mode_string : " , mode_string)
     print("text : " , text)
     user_ID = event.source.user_id
