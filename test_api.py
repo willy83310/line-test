@@ -56,9 +56,6 @@ lang = ""
 @app.route("/callback", methods=['POST'])
 def callback():
 
-    global mode_string,lang
-    mode_string = get_cookie("mode_string")
-    lang = get_cookie("lang")
 
     # get X-Line-Signature header value
     signature = request.headers['X-Line-Signature']
@@ -78,7 +75,7 @@ def handle_post_message(event):
 # can not get event text
     global mode_string ,lang
     print("event =", event)
-
+    
     data = event.postback.data 
 
     if data == "/進入翻譯模式" :
@@ -154,6 +151,10 @@ def handle_message(event):
     print(event)
 
     global mode_string , lang
+
+    mode_string = get_cookie("mode_string")
+    lang = get_cookie("lang")
+
     print('global : ' , mode_string , lang)
     if mode_string != "" :
         text = mode_string + event.message.text
