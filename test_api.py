@@ -189,6 +189,7 @@ def handle_message(event):
                 ),
             ]
         )
+        reply_text = None
                             
         line_bot_api.reply_message(
             event.reply_token,
@@ -213,6 +214,8 @@ def handle_message(event):
     if re.match(translate_feature_pattern,text):
         reply_text = translate(event.message.text)
 		
+    if reply_text == None :
+        return
 
     message = TextSendMessage(reply_text)
     print('reply message : ', message)
