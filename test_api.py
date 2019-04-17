@@ -140,10 +140,11 @@ def handle_post_message(event):
 def handle_message(event):
     print(event)
 
-    global mode_string
-    print(mode_string)
+    global mode_string , lang
+
     text = mode_string + event.message.text
 
+    print("mode_string : " , mode_string)
     print("text : " , text)
     user_ID = event.source.user_id
 	
@@ -212,7 +213,7 @@ def handle_message(event):
 #如果非以上的選項，就會學你說話
 
     if re.match(translate_feature_pattern,text):
-        reply_text = translate(event.message.text)
+        reply_text = translate(event.message.text , lang)
 		
     if reply_text == None :
         return
