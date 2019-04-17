@@ -77,7 +77,7 @@ def handle_post_message(event):
     data = event.postback.data 
 
     if data == "/進入翻譯模式" :
-        mode_string == "%翻譯"
+        mode_string = "%翻譯"
         lang = "en"
         text = "已進入翻譯模式(預設英文)，欲結束翻譯模式，請按離開翻譯模式"
 
