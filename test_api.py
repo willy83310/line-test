@@ -239,9 +239,9 @@ def handle_message(event):
 
 
 def set_cookie(key_value_list):
-"""
-key_value_list : [[key1,value1],[key2,value2],[key3,value3],[key4,value4]]
-"""
+    """
+    key_value_list : [[key1,value1],[key2,value2],[key3,value3],[key4,value4]]
+    """
     #先建立響應物件
     resp = make_response("set cookie")
     for key , value in key_value_list:
