@@ -139,6 +139,9 @@ def handle_post_message(event):
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     print(event)
+
+    global mode_string
+
     text = mode_string + " " + event.message.text
     user_ID = event.source.user_id
 	
