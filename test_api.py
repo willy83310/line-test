@@ -12,7 +12,7 @@
 #import json
 
 import re
-from flask import Flask, request, abort
+from flask import Flask, request, abort , make_response
 from urllib.request import urlopen
 #from oauth2client.service_account import ServiceAccountCredentials
 
@@ -55,6 +55,11 @@ lang = ""
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
+
+    global mode_string,lang
+    mode_string = get_cookie("mode_string")
+    lang = get_cookie("lang")
+
     # get X-Line-Signature header value
     signature = request.headers['X-Line-Signature']
     # get request body as text
@@ -79,6 +84,8 @@ def handle_post_message(event):
     if data == "/進入翻譯模式" :
         mode_string = "%翻譯"
         lang = "en"
+        cookie_list = [["mode_string",mode_string],["lang",lang]]
+        set_cookie(cookie_list)
         text = "已進入翻譯模式(預設英文)，欲結束翻譯模式，請按離開翻譯模式"
 
     elif data == "/更換語言" :
@@ -121,10 +128,14 @@ def handle_post_message(event):
     elif data == "/離開翻譯模式":
         mode_string = ""
         lang = ""
+        cookie_list = [["mode_string",""],["lang",""]]
+        set_cookie(cookie_list)
         text = "已離開翻譯模式"
 
     if re.match(translate_language_pattern , data):
         lang = data.split(" ")[1]
+		cookie_list = [["lang" , lang]]
+        set_cookie(cookie_list)
         text = "已轉換語系"
 
     print("mode_string 1 : " , mode_string)
@@ -159,6 +170,8 @@ def handle_message(event):
     if (event.message.text == "%離開"):
         mode_string = ""
         lang = ""
+        cookie_list = [["mode_string",""],["lang",""]]
+        set_cookie(cookie_list)
         reply_text = "已離開"
 
     if (text == "翻譯") :
@@ -211,7 +224,7 @@ def handle_message(event):
     elif(text=="機器人"):
         reply_text = "叫我嗎"
     else:
-        reply_text = f"{user_name},{user_ID},{user_picture} , Hello"
+        reply_text = f"{user_name},已離開功能模式"
 #如果非以上的選項，就會學你說話
 
     if re.match(translate_feature_pattern,text):
@@ -224,7 +237,28 @@ def handle_message(event):
     print('reply message : ', message)
     line_bot_api.reply_message(event.reply_token, message)
 
-#def translate()
+
+def set_cookie(key_value_list):
+"""
+key_value_list : [[key1,value1],[key2,value2],[key3,value3],[key4,value4]]
+"""
+    #先建立響應物件
+    resp = make_response("set cookie")
+    for key , value in key_value_list:
+        resp.set_cookie(key,value,max_age=3600)
+    return resp
+
+def get_cookie(key):
+    """獲取cookie"""
+    try:
+        cookie = request.cookies.get(key)
+    except Exception as e :
+        print(e)
+        cookie = ""
+    return cookie
+
+
+
 
 
 import os
