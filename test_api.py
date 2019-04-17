@@ -27,6 +27,10 @@ from linebot.exceptions import (
 
 from linebot.models import *
 
+## 自定義 (google翻譯)
+from google_translate import translate
+
+
 app = Flask(__name__)
 
 Channel_Access_Token = "15Nebz4rF/k9l0KsuYf9fIcMFIZrN4gvpHI7vGxyoWGa2rhF+NpPaA8KFehfLAKNfBKNP4jImjO8qKUzixj9NvirGAYfnoVP4OZKXMWQPnikZW0/7aMEumr7tRcxrz4cQbkUXcexJdidKcGHkjKk9QdB04t89/1O/w1cDnyilFU="
@@ -87,17 +91,17 @@ def handle_post_message(event):
     #           此類透過 Postback event 處理。
             PostbackTemplateAction(
                 label='中文', 
-                text="None",
+                text= None,
                 data='/語言 zh-tw'
                 ),
             PostbackTemplateAction(
                 label='英文', 
-                text = "None",
+                text = None,
                 data='/語言 en'
                 ),
             PostbackTemplateAction(
                 label='日文', 
-                text = "None",
+                text = None,
                 data='/語言 ja'
                 ),
             ]
@@ -132,7 +136,7 @@ def handle_post_message(event):
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     print(event)
-    text = event.message.text
+    text = mode_string + " " + event.message.text
     user_ID = event.source.user_id
 	
     user_profile = line_bot_api.get_profile(user_ID)
@@ -191,6 +195,10 @@ def handle_message(event):
     else:
         reply_text = f"{user_name},{user_ID},{user_picture} , Hello"
 #如果非以上的選項，就會學你說話
+
+    if re.match(translate_pattern,text):
+        reply_text = translate(event.message.text)
+		
 
     message = TextSendMessage(reply_text)
     print('reply message : ', message)
