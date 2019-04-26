@@ -12,7 +12,7 @@
 #import json
 
 import re
-from flask import Flask, request, abort , make_response
+from flask import Flask, request, abort , make_response ,session
 from urllib.request import urlopen
 #from oauth2client.service_account import ServiceAccountCredentials
 
@@ -79,8 +79,10 @@ def handle_post_message(event):
     data = event.postback.data 
 
     if data == "/進入翻譯模式" :
-        mode_string = "%翻譯"
-        lang = "en"
+        #mode_string = "%翻譯"
+        #lang = "en"
+        session["mode_string"] = "%翻譯"
+        session["lang"] = "en"
         text = "已進入翻譯模式(預設英文)，欲結束翻譯模式，請按離開翻譯模式"
 
     elif data == "/更換語言" :
@@ -121,12 +123,15 @@ def handle_post_message(event):
         text = None
 
     elif data == "/離開翻譯模式":
-        mode_string = ""
-        lang = ""
+        #mode_string = ""
+        #lang = ""
+		session["mode_string"] = ""
+		session["lang"] = ""
         text = "已離開翻譯模式"
 
     if re.match(translate_language_pattern , data):
-        lang = data.split(" ")[1]
+        #lang = data.split(" ")[1]
+        session["lang"] = data.split(" ")[1]
         text = "已轉換語系"
 
     print("mode_string 1 : " , mode_string)
@@ -147,8 +152,8 @@ def handle_post_message(event):
 def handle_message(event):
     print(event)
 
-    global mode_string , lang
-
+    mode_string = session.get("mode_string")
+	lang = session.get("lang")
 
     print('global : ' , mode_string , lang)
 
@@ -157,7 +162,6 @@ def handle_message(event):
     else :
         text = event.message.text
 	
-    print("mode_string : " , mode_string)
     print("text : " , text)
     user_ID = event.source.user_id
 	
@@ -168,8 +172,8 @@ def handle_message(event):
 	
 	## 強制離開模式
     if (event.message.text == "%離開"):
-        mode_string = ""
-        lang = ""
+        session["mode_string"] = ""
+        session["lang"] = ""
         reply_text = "已離開"
 
     if (text == "翻譯") :
