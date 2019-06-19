@@ -51,6 +51,19 @@ translate_feature_pattern = "^%翻譯"
 mode_string = ""
 lang = ""
 
+@app.route("/ti/p/@cxw7652m?mac=<mac>")
+def get_mac(mac):
+    global mac_addr
+    mac_addr = mac
+    print(mac_addr)
+
+@handler.add(FollowEvent)
+def handle_follow(event):
+    user_ID = event.source.user_id
+    line_bot_api.reply_message(
+        event.reply_token, TextSendMessage(text=f'{user_ID} \n mac'))
+
+
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -97,18 +110,15 @@ def handle_post_message(event):
     #           還回傳data中的資料，可
     #           此類透過 Postback event 處理。
             PostbackTemplateAction(
-                label='中文', 
-                text= None,
+                label='中文',
                 data='/語言 zh-tw'
                 ),
             PostbackTemplateAction(
-                label='英文', 
-                text = None,
+                label='英文',
                 data='/語言 en'
                 ),
             PostbackTemplateAction(
-                label='日文', 
-                text = None,
+                label='日文',
                 data='/語言 ja'
                 ),
             ]
@@ -126,7 +136,7 @@ def handle_post_message(event):
         #mode_string = ""
         #lang = ""
 		session["mode_string"] = ""
-		session["lang"] = ""
+        session["lang"] = ""
         text = "已離開翻譯模式"
 
     if re.match(translate_language_pattern , data):
@@ -153,7 +163,7 @@ def handle_message(event):
     print(event)
 
     mode_string = session.get("mode_string")
-	lang = session.get("lang")
+    lang = session.get("lang")
 
     print('global : ' , mode_string , lang)
 
@@ -170,7 +180,7 @@ def handle_message(event):
     user_name = user_profile.display_name
     user_picture = user_profile.picture_url
 	
-	## 強制離開模式
+    ## 強制離開模式
     if (event.message.text == "%離開"):
         session["mode_string"] = ""
         session["lang"] = ""
@@ -191,18 +201,15 @@ def handle_message(event):
     #           還回傳data中的資料，可
     #           此類透過 Postback event 處理。
             PostbackTemplateAction(
-                label='進入翻譯模式', 
-                text=None,
+                label='進入翻譯模式',
                 data='/進入翻譯模式'
                 ),
             PostbackTemplateAction(
-                label='更換語言', 
-                text = None,
+                label='更換語言',
                 data='/更換語言'
                 ),
             PostbackTemplateAction(
-                label='離開翻譯模式', 
-                text = None,
+                label='離開翻譯模式',
                 data='/離開翻譯模式'
                 ),
             ]
