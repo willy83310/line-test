@@ -135,7 +135,7 @@ def handle_post_message(event):
     elif data == "/離開翻譯模式":
         #mode_string = ""
         #lang = ""
-		session["mode_string"] = ""
+        session["mode_string"] = ""
         session["lang"] = ""
         text = "已離開翻譯模式"
 
@@ -146,8 +146,8 @@ def handle_post_message(event):
 
     print("mode_string 1 : " , mode_string)
 
-    if text == None:
-        return 
+    if text is None:
+        return
 
     line_bot_api.reply_message(
         event.reply_token,
@@ -171,10 +171,10 @@ def handle_message(event):
         text = mode_string + event.message.text
     else :
         text = event.message.text
-	
+
     print("text : " , text)
     user_ID = event.source.user_id
-	
+
     user_profile = line_bot_api.get_profile(user_ID)
 
     user_name = user_profile.display_name
@@ -200,17 +200,17 @@ def handle_message(event):
     #           除了文字會顯示在聊天室中，
     #           還回傳data中的資料，可
     #           此類透過 Postback event 處理。
-            PostbackTemplateAction(
-                label='進入翻譯模式',
-                data='/進入翻譯模式'
+                PostbackTemplateAction(
+                    label='進入翻譯模式',
+                    data='/進入翻譯模式'
                 ),
-            PostbackTemplateAction(
-                label='更換語言',
-                data='/更換語言'
+                PostbackTemplateAction(
+                    label='更換語言',
+                    data='/更換語言'
                 ),
-            PostbackTemplateAction(
-                label='離開翻譯模式',
-                data='/離開翻譯模式'
+                PostbackTemplateAction(
+                    label='離開翻譯模式',
+                    data='/離開翻譯模式'
                 ),
             ]
         )
@@ -223,7 +223,7 @@ def handle_message(event):
                 template=button_template_message
             )
         )
-		
+
     elif (text=="Hi"):
         reply_text = f"{user_name} , Hello"
         #Your user ID
