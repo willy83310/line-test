@@ -61,7 +61,7 @@ def get_mac(mac):
 def handle_follow(event):
     user_ID = event.source.user_id
     line_bot_api.reply_message(
-        event.reply_token, TextSendMessage(text=f'{user_ID} \n mac'))
+        event.reply_token, TextSendMessage(text=f'{user_ID} \n {mac}'))
 
 
 
